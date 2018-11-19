@@ -133,7 +133,7 @@ func changeLocal(num [5]int) {
 
 func main() {
     num := [...]int{5, 6, 7, 8, 8}
-    fmt.Println("before passing to function ", num)
+    fmt.Println("before passing to function ", num) 
     changeLocal(num) //num is passed by value
     fmt.Println("after passing to function ", num)
 }
@@ -297,13 +297,13 @@ func main() {
 }
 
 /*output
-lion tiger
-cat dog
-pigeon peacock
+lion tiger 
+cat dog 
+pigeon peacock 
 
-apple samsung
-microsoft google
-AT&T T-Mobile
+apple samsung 
+microsoft google 
+AT&T T-Mobile 
 */
 
 多维数组遍历
@@ -325,8 +325,8 @@ func main() {
 }
 /*
 output:
-(0,0)=1 (0,1)=2 (0,2)=3
-(1,0)=7 (1,1)=8 (1,2)=9
+(0,0)=1 (0,1)=2 (0,2)=3 
+(1,0)=7 (1,1)=8 (1,2)=9 
  */
 
 3.2 数组指针和指针数组
@@ -351,10 +351,7 @@ func main() {
     a := [...]int{1, 2}
     println(&a, &a[0], &a[1])  //0xc042049f68 0xc042049f68 0xc042049f70
 }
-1
-2
-3
-4
+
 数组指针可以直接用来操作元素
 
 func main() {
@@ -387,11 +384,11 @@ func main() {
 
 for i := 0; i < len(a); i++ {
    ...
-}
+} 
 
 for index, v := range a {
    ...
-}
+} 
 
 访问越界，如果下标在数组合法范围之外，则触发访问越界，会panic
 
@@ -400,3 +397,62 @@ for index, v := range a {
 支持 “==”、”!=” 操作符，因为内存总是被初始化过的。
 
 指针数组 [n]*T，数组指针*[n]T。
+
+
+
+----------------------------------------------------
+golang中的三个点 '...' 的用法
+----------------------------------------------------
+
+
+'...' 其实是go的一种语法糖。 
+它的第一个用法主要是用于函数有多个不定参数的情况，可以接受多个不确定数量的参数。 
+第二个用法是slice可以被打散进行传递。
+
+下面直接上例子：
+
+func test1(args ...string) { //可以接受任意个string参数
+    for _, v:= range args{
+        fmt.Println(v)
+    }
+}
+
+func main(){
+var strss= []string{
+        "qwr",
+        "234",
+        "yui",
+        "cvbc",
+    }
+    test1(strss...) //切片被打散传入
+}
+
+结果：
+qwr
+234
+yui
+cvbc
+其中strss切片内部的元素数量可以是任意个，test1函数都能够接受
+--------------------- 
+第二个例子：
+  var strss= []string{
+        "qwr",
+        "234",
+        "yui",
+
+    }
+    var strss2= []string{
+        "qqq",
+        "aaa",
+        "zzz",
+        "zzz",
+    }
+strss=append(strss,strss2...) //strss2的元素被打散一个个append进strss
+fmt.Println(strss)
+结果：
+
+[qwr 234 yui qqq aaa zzz zzz]
+1
+如果没有’…’，面对上面的情况，无疑会增加代码量，有了’…’，是不是感觉简洁了许多
+--------------------- 
+
